@@ -1,530 +1,418 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dayananda Sagar University — Home</title>
-  <meta name="description" content="Professional university homepage inspired by DSU — refined UI/UX, navy & gold theme, accessible and responsive animations. Single-file HTML for GitHub." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    /* ----------------------------
-       Theme: Professional Navy & Gold (with refined dark mode)
-       Improvements: stronger contrast, adjusted card/bg/overlay colors
-       ---------------------------- */
-    :root{
-      --primary:#0b2b5a;   /* deep navy */
-      --primary-2:#174ea6; /* indigo accent */
-      --accent:#d4af37;    /* gold */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dayananda Sagar University - Home | Global Excellence</title>
+    <!-- Load Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for professional UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-      --bg:#f7f9fb;        /* page bg - light */
-      --card:#ffffff;      /* card bg - light */
-      --muted:#556070;     /* muted text - light */
-      --text:#04202a;      /* main text - light */
-      --overlay-light: rgba(2,6,23,0.12);
-      --stat-bg-light: rgba(11,43,90,0.06);
+    <style>
+        /* 1. Custom Theme Configuration (Green & Gold Palette) */
+        :root {
+            /* Light Theme */
+            --color-primary: #047857; /* Deep Forest Green */
+            --color-secondary: #f59e0b; /* Bright Gold/Amber */
+            --color-text: #1f2937;
+            --color-background: #ffffff;
+            --color-card-bg: #f9fafb;
+            --color-border: #e5e7eb;
+            --color-shadow: rgba(4, 120, 87, 0.1);
+        }
 
-      --glass: rgba(255,255,255,0.7);
-      --radius:14px;
-      --shadow: 0 18px 60px rgba(11,22,40,0.06);
-      --shadow-strong: 0 26px 80px rgba(6,18,40,0.10);
-      --transition: 360ms;
-    }
+        /* Dark Theme */
+        .dark {
+            --color-primary: #34d399; /* Lighter Green for contrast */
+            --color-secondary: #fcd34d; /* Softer Gold */
+            --color-text: #e5e7eb;
+            --color-background: #111827; /* Dark Slate */
+            --color-card-bg: #1f2937;
+            --color-border: #374151;
+            --color-shadow: rgba(52, 211, 153, 0.1);
+        }
 
-    /* Dark theme: tuned for contrast and readability */
-    [data-theme='dark']{
-      --primary:#0b2b5a;   /* keep brand navy */
-      --primary-2:#174ea6;
-      --accent:#f0c85b;    /* gold (slightly brighter) */
+        /* 2. Global Styles and Typography */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+            background-color: var(--color-background);
+            color: var(--color-text);
+        }
 
-      --bg:#071523;        /* page bg - deep navy/teal */
-      --card:#081826;      /* card bg - slightly lighter than page */
-      --muted:#9fb8bf;     /* muted text - increases contrast */
-      --text:#eaf6f7;      /* main text - light */
+        /* Apply custom colors using utility classes where possible, but use CSS variables for dynamic elements */
+        .text-primary { color: var(--color-primary); }
+        .bg-card { background-color: var(--color-card-bg); }
+        .shadow-custom { box-shadow: 0 4px 12px var(--color-shadow); }
 
-      /* overlays use slightly warmer translucent blacks for better legibility */
-      --overlay-dark: linear-gradient(180deg, rgba(3,9,12,0.28), rgba(3,9,12,0.5));
-      --panel-overlay: rgba(0,0,0,0.45);
-      --stat-bg-dark: rgba(255,255,255,0.04);
+        /* 3. Professional Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-      --shadow: 0 26px 80px rgba(0,0,0,0.6);
-      --shadow-strong: 0 36px 120px rgba(0,0,0,0.6);
-    }
+        /* Button Hover Animation */
+        .btn-primary-custom {
+            transition: all 0.3s ease;
+        }
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(4, 120, 87, 0.3);
+        }
 
-    /* Respect prefers-reduced-motion */
-    @media (prefers-reduced-motion: reduce){
-      :root{--transition:0ms}
-      *{animation:none !important;transition:none !important}
-    }
+        /* Header Fix for Logo in Dark Mode */
+        .dark .logo-text {
+            color: var(--color-primary); /* Ensure logo remains bright */
+        }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
-      background:linear-gradient(180deg,var(--bg), rgba(2,6,23,0.02));
-      transition:background var(--transition) ease,color var(--transition) ease;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      overflow-x:hidden;
-    }
-
-    /* Container and utilities */
-    .container{max-width:1200px;margin:0 auto;padding:28px}
-    a{color:inherit}
-    .muted{color:var(--muted)}
-    .visually-hidden{position:absolute!important;height:1px;width:1px;overflow:hidden;clip:rect(1px,1px,1px,1px);white-space:nowrap}
-
-    /* Header (professional) */
-    header.topbar{position:sticky;top:0;z-index:90;background:var(--card);backdrop-filter: blur(6px);box-shadow:var(--shadow);transition:padding .28s ease}
-    .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 28px}
-    .brand{display:flex;gap:14px;align-items:center}
-    .logo{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:18px;box-shadow:0 8px 30px rgba(10,18,40,0.08)}
-    .brand-title{display:flex;flex-direction:column}
-    .brand-title h1{margin:0;font-size:18px;letter-spacing:0.2px}
-    .brand-title .tag{font-size:12px;color:var(--muted)}
-
-    /* Nav */
-    nav.main{display:flex;gap:18px;align-items:center}
-    nav.main a{padding:10px 12px;border-radius:10px;color:var(--muted);font-weight:600;text-decoration:none}
-    nav.main a:hover{color:var(--primary-2);background:linear-gradient(90deg,rgba(23,78,166,0.04),rgba(11,43,90,0.02))}
-    .cta{background:linear-gradient(90deg,var(--primary),var(--primary-2));color:white;padding:10px 18px;border-radius:12px;font-weight:800;box-shadow:var(--shadow-strong)}
-    .cta.secondary{background:transparent;border:1px solid rgba(11,43,90,0.06);color:var(--primary);padding:8px 14px}
-
-    /* Theme & mobile */
-    .actions{display:flex;gap:12px;align-items:center}
-    .theme-toggle{display:inline-grid;place-items:center;width:44px;height:44px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.02));cursor:pointer;transition:transform .22s ease}
-    .theme-toggle:active{transform:scale(0.96)}
-    .hamb{display:none;background:transparent;border:0;font-size:22px}
-
-    /* Mobile off-canvas nav */
-    .mobile-panel{position:fixed;inset:0;right:0;background:linear-gradient(180deg,var(--card),var(--card));transform:translateX(110%);transition:transform .36s cubic-bezier(.2,.9,.2,1);box-shadow:-30px 0 60px rgba(2,6,23,0.14);z-index:140}
-    .mobile-panel.open{transform:translateX(0)}
-    .mobile-panel .inner{padding:22px}
-    .mobile-panel nav a{display:block;padding:14px 6px;border-radius:8px;color:var(--text);font-weight:700}
-
-    /* Hero — professional layout + visual focus */
-    .hero{display:grid;grid-template-columns:1fr 460px;gap:36px;padding:60px 28px 44px;align-items:center;position:relative}
-    .hero .bg-deco{position:absolute;inset:0;pointer-events:none;z-index:0}
-    .hero-left{z-index:2}
-    .hero-left h2{font-size:48px;margin:0 0 12px;line-height:1.03}
-    .hero-left p{color:var(--muted);font-size:16px;margin:0 0 18px}
-
-    /* Search / quick actions */
-    .search-card{display:flex;gap:12px;align-items:center;background:var(--card);padding:20px;border-radius:14px;box-shadow:var(--shadow);transition:transform var(--transition) cubic-bezier(.2,.9,.2,1)}
-    .search-card input{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(6,22,40,0.06);background:transparent;color:var(--text)}
-    .search-card input::placeholder{color:var(--muted)}
-    .quick-links{display:flex;gap:10px}
-    .pill{padding:8px 12px;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--primary-2));color:white;font-weight:700;font-size:13px}
-
-    /* Right card with video / image and micro-CTA */
-    .hero-right{border-radius:16px;min-height:380px;overflow:hidden;position:relative;background-size:cover;background-position:center;box-shadow:var(--shadow);transition:transform var(--transition) ease}
-    .hero-right::before{content:'';position:absolute;inset:0;background:var(--overlay-light);transition:background var(--transition) ease}
-    [data-theme='dark'] .hero-right::before{background:var(--overlay-dark)}
-    .hero-right .overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:20px;color:var(--text)}
-    .hero-right .stats{display:flex;gap:12px}
-    .stat{padding:12px;border-radius:10px;min-width:86px;text-align:center;background:var(--stat-bg-light);}
-    [data-theme='dark'] .stat{background:var(--stat-bg-dark);}
-
-    /* Programs cards (grid) */
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
-    .card{background:var(--card);padding:22px;border-radius:12px;box-shadow:0 14px 46px rgba(6,22,40,0.04);transition:transform .32s ease,box-shadow .32s ease}
-    .card:hover{transform:translateY(-10px);box-shadow:var(--shadow-strong)}
-    .card h3{margin:0 0 8px}
-    .card p{margin:0;color:var(--muted)}
-
-    /* News & events */
-    .grid-2{display:grid;grid-template-columns:2fr 1fr;gap:18px}
-    .news-item{display:flex;gap:12px;align-items:flex-start}
-    .news-item img{width:120px;height:80px;object-fit:cover;border-radius:8px}
-
-    /* Footer */
-    footer{background:linear-gradient(180deg,var(--card),transparent);padding:44px 24px;border-top-left-radius:24px;border-top-right-radius:24px;margin-top:40px}
-    .footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-
-    /* Animations & motion */
-    .reveal{opacity:0;transform:translateY(12px);animation:reveal .9s cubic-bezier(.2,.9,.2,1) forwards}
-    .reveal.delay-1{animation-delay:.06s}
-    .reveal.delay-2{animation-delay:.14s}
-    .reveal.delay-3{animation-delay:.22s}
-    @keyframes reveal{to{opacity:1;transform:none}}
-
-    .float{animation:floatY 6s ease-in-out infinite}
-    @keyframes floatY{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
-
-    /* tilt for interactive cards (desktop only) */
-    .tilt{transform-origin:center;transition:transform 320ms ease}
-
-    /* responsive tweaks */
-    @media (max-width:1100px){.hero{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
-    @media (max-width:760px){nav.main{display:none}.hamb{display:block}.cards{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.hero-left h2{font-size:28px;padding-right:6px}.topbar-inner{padding:10px}}
-
-    /* Professional micro-interaction for CTA */
-    .cta.pulse{position:relative;overflow:hidden}
-    .cta.pulse::after{content:'';position:absolute;left:-40%;top:0;width:30%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent);transform:skewX(-14deg);animation:pulse 2.4s linear infinite}
-    @keyframes pulse{to{left:160%}}
-
-  </style>
+        /* Lucide Icon Styling */
+        .lucide {
+            color: var(--color-primary);
+        }
+    </style>
 </head>
-<body data-theme="light">
-  <header class="topbar" role="banner" aria-label="Top navigation">
-    <div class="topbar-inner container">
-      <div class="brand">
-        <div class="logo" aria-hidden="true">DSU</div>
-        <div class="brand-title">
-          <h1>Dayananda Sagar University</h1>
-          <div class="tag muted">Excellence in Education & Research</div>
+<body class="antialiased">
+
+    <!-- Top Bar (Quick Contact Info) -->
+    <div class="bg-gray-100 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300 py-2 transition-colors duration-400 hidden sm:block">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+            <div class="flex space-x-6">
+                <span class="flex items-center"><i data-lucide="mail" class="w-4 h-4 mr-1"></i> admissions@dsu.edu.in</span>
+                <span class="flex items-center"><i data-lucide="phone" class="w-4 h-4 mr-1"></i> +91 80 46461800</span>
+            </div>
+            <a href="https://api.whatsapp.com/send?phone=916366885507" target="_blank" class="flex items-center hover:text-primary transition-colors duration-300">
+                <i data-lucide="message-square" class="w-4 h-4 mr-1"></i> Chat with Admissions (WhatsApp)
+            </a>
         </div>
-      </div>
-
-      <nav class="main" role="navigation" aria-label="Main navigation">
-        <a href="#about">About</a>
-        <a href="#programs">Programs</a>
-        <a href="#admissions">Admissions</a>
-        <a href="#research">Research</a>
-        <a href="#news">News</a>
-        <a class="cta pulse" href="#apply">Apply Now</a>
-      </nav>
-
-      <div class="actions">
-        <div class="theme-toggle" id="themeToggle" role="button" tabindex="0" aria-label="Toggle theme">🌙</div>
-        <button class="hamb" id="hambBtn" aria-label="Open menu">☰</button>
-      </div>
     </div>
-  </header>
 
-  <!-- Mobile panel -->
-  <aside class="mobile-panel" id="mobilePanel" aria-hidden="true">
-    <div class="inner">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div class="logo" style="width:48px;height:48px;font-size:15px">DSU</div>
-          <div>
-            <div style="font-weight:800">Dayananda Sagar University</div>
-            <div class="muted" style="font-size:12px">Quick links</div>
-          </div>
-        </div>
-        <button id="mobileClose" aria-label="Close menu" style="background:transparent;border:0;font-size:20px">✕</button>
-      </div>
-      <nav>
-        <a href="#about" onclick="closeMobile()">About</a>
-        <a href="#programs" onclick="closeMobile()">Programs</a>
-        <a href="#admissions" onclick="closeMobile()">Admissions</a>
-        <a href="#research" onclick="closeMobile()">Research</a>
-        <a href="#news" onclick="closeMobile()">News</a>
-        <a class="cta" href="#apply">Apply</a>
-      </nav>
-    </div>
-  </aside>
+    <!-- Header / Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white dark:bg-gray-900 shadow-lg dark:shadow-2xl transition-colors duration-400 border-b border-gray-200 dark:border-gray-700">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <span class="text-3xl font-extrabold logo-text" style="color: var(--color-primary);">DSU</span>
+                    <span class="ml-1 text-xl font-semibold text-gray-800 dark:text-gray-100">Dayananda Sagar University</span>
+                </div>
 
-  <main>
-    <section class="hero container">
-      <div class="bg-deco" aria-hidden="true">
-        <svg width="100%" height="100%" style="position:absolute;left:-8%;top:-8%;opacity:0.12;filter:blur(36px)">
-          <defs><linearGradient id="gnav" x1="0" x2="1"><stop offset="0" stop-color="var(--primary)"/><stop offset="1" stop-color="var(--primary-2)"/></linearGradient></defs>
-          <ellipse cx="20%" cy="30%" rx="320" ry="220" fill="url(#gnav)"/>
-          <ellipse cx="86%" cy="12%" rx="180" ry="140" fill="rgba(212,175,55,0.12)"/>
-        </svg>
-      </div>
+                <!-- Desktop Nav Links -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="text-gray-600 dark:text-gray-300 hover:text-primary font-medium transition duration-300">Home</a>
+                    <a href="#academics" class="text-gray-600 dark:text-gray-300 hover:text-primary font-medium transition duration-300">Academics</a>
+                    <a href="#admissions" class="text-gray-600 dark:text-gray-300 hover:text-primary font-medium transition duration-300">Admissions</a>
+                    <a href="#placements" class="text-gray-600 dark:text-gray-300 hover:text-primary font-medium transition duration-300">Placements</a>
+                    <a href="#contact" class="text-gray-600 dark:text-gray-300 hover:text-primary font-medium transition duration-300">Contact</a>
+                    <a href="#" class="btn-primary-custom px-6 py-2 rounded-full font-bold text-white shadow-md transition duration-300" style="background-color: var(--color-primary);">Apply Now</a>
+                </div>
 
-      <div class="hero-left">
-        <div class="reveal delay-1">
-          <h2>Educating for impact — Career-ready degrees and research-led learning.</h2>
-          <p class="muted">World-class faculty, industry partnerships, and a campus designed for innovation. Learn on campus or online — flexible programs for every learner.</p>
-
-          <div style="height:18px"></div>
-
-          <div class="search-card" aria-label="Quick search">
-            <input id="q" placeholder="Search programs, courses, departments..." aria-label="Search" />
-            <div style="display:flex;gap:10px;align-items:center">
-              <button class="cta" onclick="searchPrograms()">Search</button>
-              <div class="quick-links">
-                <span class="pill">Undergraduate</span>
-                <span class="pill" style="background:transparent;color:var(--primary);border:1px solid rgba(11,43,90,0.06);">Postgraduate</span>
-              </div>
+                <!-- Theme Toggle & Mobile Menu Button -->
+                <div class="flex items-center md:hidden space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition duration-300" aria-label="Toggle dark and light theme">
+                        <i id="theme-icon" data-lucide="sun" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
+                    </button>
+                    <button id="mobile-menu-button" class="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none" aria-label="Open menu">
+                        <i data-lucide="menu" class="w-6 h-6 text-gray-600 dark:text-gray-300"></i>
+                    </button>
+                </div>
             </div>
-          </div>
+        </nav>
 
-          <div class="cards" style="margin-top:20px">
-            <div class="card tilt reveal delay-2">
-              <h3>Computer Science</h3>
-              <p class="muted">AI, Data Science, Cybersecurity — industry-aligned curriculum.</p>
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">Home</a>
+                <a href="#academics" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">Academics</a>
+                <a href="#admissions" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">Admissions</a>
+                <a href="#placements" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">Placements</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800">Contact</a>
+                <a href="#" class="block w-full text-center mt-2 btn-primary-custom px-3 py-2 rounded-full font-bold text-white" style="background-color: var(--color-primary);">Apply Now</a>
             </div>
-            <div class="card tilt reveal delay-3">
-              <h3>Business & Management</h3>
-              <p class="muted">MBA, Finance, Entrepreneurship with live projects.</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="relative overflow-hidden pt-32 pb-24 lg:pt-40 lg:pb-32 bg-gray-50 dark:bg-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="lg:grid lg:grid-cols-12 lg:gap-12 items-center">
+                    <div class="col-span-6">
+                        <h1 class="text-5xl lg:text-7xl font-extrabold leading-tight mb-6 fade-in" style="color: var(--color-primary); animation-delay: 0.1s;">
+                            Nurturing Future Leaders Through Innovation
+                        </h1>
+                        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 fade-in" style="animation-delay: 0.3s;">
+                            Dayananda Sagar University (DSU) offers a transformative educational experience focused on research, entrepreneurship, and societal contribution.
+                        </p>
+                        <div class="flex space-x-4 fade-in" style="animation-delay: 0.5s;">
+                            <a href="#admissions" class="btn-primary-custom px-8 py-3 text-lg font-semibold rounded-lg text-white" style="background-color: var(--color-primary);">
+                                Start Your Journey
+                            </a>
+                            <a href="#academics" class="px-8 py-3 text-lg font-semibold rounded-lg border-2 border-primary text-primary dark:text-white dark:border-white hover:bg-primary hover:text-white transition duration-300" style="border-color: var(--color-primary);">
+                                Explore Programs
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-span-6 mt-12 lg:mt-0 relative fade-in" style="animation-delay: 0.7s;">
+                        <!-- Placeholder Image -->
+                        <img src="https://placehold.co/800x500/047857/ffffff?text=DSU+Campus+View" alt="University Campus View" class="rounded-xl shadow-2xl object-cover w-full h-auto transform transition duration-500 hover:scale-[1.01]" />
+                    </div>
+                </div>
             </div>
-            <div class="card tilt reveal delay-2">
-              <h3>Engineering</h3>
-              <p class="muted">Mechanical, Civil, Electrical — hands-on labs & internships.</p>
+            <!-- Decorative Wave (Subtle Animation) -->
+            <svg class="absolute bottom-0 left-0 w-full h-24 transform translate-y-full animate-wave" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+                <path fill="var(--color-background)" fill-opacity="1" d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,96C672,96,768,128,864,160C960,192,1056,224,1152,213.3C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </section>
+
+        <!-- Academics Section -->
+        <section id="academics" class="py-20 bg-card">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 fade-in" style="animation-delay: 0.1s;">
+                    <h2 class="text-4xl font-extrabold text-primary mb-3">Schools of Excellence</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400">Diverse disciplines guided by industry-focused curriculum and expert faculty.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Academic Card 1 -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-custom border-t-4 border-primary hover:shadow-xl transform hover:scale-[1.03] transition duration-500 fade-in" style="animation-delay: 0.3s;">
+                        <i data-lucide="wrench" class="w-8 h-8 mb-4 text-primary"></i>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">School of Engineering</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Pioneering programs in AI, Data Science, and core Engineering disciplines.</p>
+                        <a href="#" class="mt-4 inline-flex items-center text-primary hover:underline font-semibold">View Courses <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i></a>
+                    </div>
+                    <!-- Academic Card 2 -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-custom border-t-4 border-primary hover:shadow-xl transform hover:scale-[1.03] transition duration-500 fade-in" style="animation-delay: 0.4s;">
+                        <i data-lucide="briefcase" class="w-8 h-8 mb-4 text-primary"></i>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Management & Commerce</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Developing confident leaders through experiential learning and entrepreneurial culture.</p>
+                        <a href="#" class="mt-4 inline-flex items-center text-primary hover:underline font-semibold">View Courses <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i></a>
+                    </div>
+                    <!-- Academic Card 3 -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-custom border-t-4 border-primary hover:shadow-xl transform hover:scale-[1.03] transition duration-500 fade-in" style="animation-delay: 0.5s;">
+                        <i data-lucide="heart-pulse" class="w-8 h-8 mb-4 text-primary"></i>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Health Sciences</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Building ethical and competent healthcare professionals for global needs.</p>
+                        <a href="#" class="mt-4 inline-flex items-center text-primary hover:underline font-semibold">View Courses <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i></a>
+                    </div>
+                    <!-- Academic Card 4 -->
+                    <div class="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-custom border-t-4 border-primary hover:shadow-xl transform hover:scale-[1.03] transition duration-500 fade-in" style="animation-delay: 0.6s;">
+                        <i data-lucide="palette" class="w-8 h-8 mb-4 text-primary"></i>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Arts & Humanities</h3>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Fostering creativity, critical thinking, and social responsibility.</p>
+                        <a href="#" class="mt-4 inline-flex items-center text-primary hover:underline font-semibold">View Courses <i data-lucide="arrow-right" class="w-4 h-4 ml-1"></i></a>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
+        </section>
 
-      <aside class="hero-right reveal" aria-hidden="true" style="background-image:linear-gradient(180deg, rgba(11,22,40,0.04), rgba(11,22,40,0.08)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1400&auto=format&fit=crop&s=6b3b9a1d7a3d3b7b2a0f7ea3ff0fe7a2')">
-        <div class="overlay">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div style="font-weight:800">Campus Experience</div>
-            <a class="cta secondary" href="#virtual">Virtual Tour</a>
-          </div>
-
-          <div style="height:20px"></div>
-
-          <div class="stats">
-            <div class="stat float">
-              <div style="font-size:18px;font-weight:800">18k+</div>
-              <div class="muted" style="font-size:12px">Students</div>
+        <!-- Admissions & Ranking Section -->
+        <section id="admissions" class="py-20">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+                    <!-- Left: Admissions CTA -->
+                    <div class="fade-in" style="animation-delay: 0.1s;">
+                        <span class="text-secondary font-semibold uppercase tracking-wider">Admissions 2025-26</span>
+                        <h2 class="text-4xl font-extrabold text-gray-900 dark:text-gray-100 mt-2 mb-4">Your Future Starts Now</h2>
+                        <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">
+                            The application window is open for all Undergraduate and Postgraduate programs. We welcome students who are driven by curiosity and committed to making an impact.
+                        </p>
+                        <ul class="space-y-3 text-gray-700 dark:text-gray-300 mb-8">
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-5 h-5 mr-2 mt-1 text-primary flex-shrink-0"></i> Merit-based Scholarship opportunities available.</li>
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-5 h-5 mr-2 mt-1 text-primary flex-shrink-0"></i> Entrance Exam (DSAT) registrations are now active.</li>
+                            <li class="flex items-start"><i data-lucide="check-circle" class="w-5 h-5 mr-2 mt-1 text-primary flex-shrink-0"></i> Foreign & NRI Quota applications handled separately.</li>
+                        </ul>
+                        <a href="#" class="btn-primary-custom px-8 py-3 text-lg font-semibold rounded-lg text-white shadow-lg" style="background-color: var(--color-primary);">
+                            Check Eligibility & Apply
+                        </a>
+                    </div>
+                    <!-- Right: Key Statistics / Ranking -->
+                    <div class="mt-12 lg:mt-0 grid grid-cols-2 gap-8">
+                        <!-- Stat 1 -->
+                        <div class="bg-card rounded-xl p-6 shadow-custom text-center border-t-4 border-secondary fade-in" style="animation-delay: 0.3s;">
+                            <div class="text-5xl font-extrabold mb-1" style="color: var(--color-primary);">95%</div>
+                            <p class="text-gray-600 dark:text-gray-400 font-medium">Placement Record</p>
+                        </div>
+                        <!-- Stat 2 -->
+                        <div class="bg-card rounded-xl p-6 shadow-custom text-center border-t-4 border-secondary fade-in" style="animation-delay: 0.5s;">
+                            <div class="text-5xl font-extrabold mb-1" style="color: var(--color-primary);">50+</div>
+                            <p class="text-gray-600 dark:text-gray-400 font-medium">Research Centers</p>
+                        </div>
+                        <!-- Stat 3 -->
+                        <div class="bg-card rounded-xl p-6 shadow-custom text-center border-t-4 border-secondary fade-in" style="animation-delay: 0.7s;">
+                            <div class="text-5xl font-extrabold mb-1" style="color: var(--color-primary);">A++</div>
+                            <p class="text-gray-600 dark:text-gray-400 font-medium">NAAC Grade</p>
+                        </div>
+                        <!-- Stat 4 -->
+                        <div class="bg-card rounded-xl p-6 shadow-custom text-center border-t-4 border-secondary fade-in" style="animation-delay: 0.9s;">
+                            <div class="text-5xl font-extrabold mb-1" style="color: var(--color-primary);">300+</div>
+                            <p class="text-gray-600 dark:text-gray-400 font-medium">Industry Partnerships</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="stat float">
-              <div style="font-size:18px;font-weight:800">320+</div>
-              <div class="muted" style="font-size:12px">Faculty</div>
+        </section>
+
+        <!-- Placements / Testimonial Section -->
+        <section id="placements" class="py-20 bg-gray-50 dark:bg-gray-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12 fade-in">
+                    <h2 class="text-4xl font-extrabold text-primary mb-3">Our Global Impact</h2>
+                    <p class="text-lg text-gray-600 dark:text-gray-400">Where DSU graduates make their mark.</p>
+                </div>
+                <!-- Simple Logo Carousel (Placeholder for images/logos) -->
+                <div class="flex flex-wrap justify-center items-center gap-8 lg:gap-16 opacity-70 fade-in" style="animation-delay: 0.3s;">
+                    <i data-lucide="monitor" class="w-12 h-12 text-gray-500 dark:text-gray-400"></i>
+                    <i data-lucide="code" class="w-12 h-12 text-gray-500 dark:text-gray-400"></i>
+                    <i data-lucide="banknote" class="w-12 h-12 text-gray-500 dark:text-gray-400"></i>
+                    <i data-lucide="hospital" class="w-12 h-12 text-gray-500 dark:text-gray-400"></i>
+                    <i data-lucide="plane" class="w-12 h-12 text-gray-500 dark:text-gray-400"></i>
+                    <i data-lucide="rocket" class="w-12 h-12 text-gray-500 dark:text-gray-400"></i>
+                </div>
             </div>
-            <div class="stat float">
-              <div style="font-size:18px;font-weight:800">150+</div>
-              <div class="muted" style="font-size:12px">Programs</div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-800 dark:bg-gray-950 text-white pt-12 pb-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 border-b border-gray-700 pb-10">
+                <!-- University Info -->
+                <div class="space-y-4">
+                    <h3 class="text-3xl font-extrabold" style="color: var(--color-secondary);">DSU</h3>
+                    <p class="text-sm text-gray-400">
+                        Committed to quality education, research, and fostering professional leaders with ethical integrity.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300" aria-label="Facebook"><i data-lucide="facebook" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300" aria-label="Twitter"><i data-lucide="twitter" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300" aria-label="LinkedIn"><i data-lucide="linkedin" class="w-6 h-6"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300" aria-label="Instagram"><i data-lucide="instagram" class="w-6 h-6"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="space-y-3">
+                    <h4 class="text-xl font-semibold mb-3">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">About DSU</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">Campus Tour</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">Careers</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">DSAT</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Helpline (Factual Data) -->
+                <div class="space-y-3">
+                    <h4 class="text-xl font-semibold mb-3">Admissions Contact</h4>
+                    <div class="space-y-2 text-sm">
+                        <p class="flex items-center text-gray-400"><i data-lucide="phone" class="w-4 h-4 mr-2 text-secondary"></i> +91 80 46461800</p>
+                        <p class="flex items-center text-gray-400"><i data-lucide="phone" class="w-4 h-4 mr-2 text-secondary"></i> +91 6366885507</p>
+                        <p class="flex items-center text-gray-400"><i data-lucide="mail" class="w-4 h-4 mr-2 text-secondary"></i> admissions@dsu.edu.in</p>
+                        <a href="https://api.whatsapp.com/send?phone=916366885507" target="_blank" class="flex items-center text-gray-400 hover:text-primary transition-colors duration-300">
+                            <i data-lucide="message-circle" class="w-4 h-4 mr-2 text-secondary"></i> WhatsApp Support
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Address & Location (Factual Data) -->
+                <div class="space-y-3">
+                    <h4 class="text-xl font-semibold mb-3">Main Campus Address</h4>
+                    <p class="text-sm text-gray-400">
+                        DSU Main Campus:
+                        Devarakaggalahalli, Harohalli, Kanakapura Road, Bengaluru South Dt. – 562 112.
+                    </p>
+                    <h4 class="text-xl font-semibold mb-3 pt-4">City Innovation Campus</h4>
+                    <p class="text-sm text-gray-400">
+                        Kudlu Gate, Hosur Road, Administrative & Main Admission office, Bengaluru - 560 068.
+                    </p>
+                </div>
             </div>
-          </div>
 
-          <div style="height:18px"></div>
-          <div style="display:flex;gap:12px">
-            <a class="cta" href="#apply">Apply</a>
-            <a class="cta secondary" href="#scholarships">Scholarships</a>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <!-- About -->
-    <section class="container reveal" id="about">
-      <div style="display:grid;grid-template-columns:1fr 420px;gap:22px;align-items:center">
-        <div>
-          <h2>About Dayananda Sagar University</h2>
-          <p class="muted">A leading university focused on applied research, industry collaboration and holistic student development. Campus facilities include advanced labs, incubators and student support services.</p>
-
-          <div style="display:flex;gap:12px;margin-top:18px">
-            <div class="card" style="padding:12px;text-align:center">
-              <div style="font-weight:800">250+</div>
-              <div class="muted" style="font-size:13px">Programs</div>
+            <!-- Copyright and Credits -->
+            <div class="mt-6 text-center text-sm text-gray-500">
+                &copy; 2025 Dayananda Sagar University. All Rights Reserved. | Designed with Professional UI/UX.
             </div>
-            <div class="card" style="padding:12px;text-align:center">
-              <div style="font-weight:800">15k+</div>
-              <div class="muted" style="font-size:13px">Alumni</div>
-            </div>
-            <div class="card" style="padding:12px;text-align:center">
-              <div style="font-weight:800">120+</div>
-              <div class="muted" style="font-size:13px">Partners</div>
-            </div>
-          </div>
         </div>
+    </footer>
 
-        <div>
-          <div class="card" style="padding:18px">
-            <h4>Message from the Vice-Chancellor</h4>
-            <p class="muted">We cultivate leaders with strong technical foundations, ethical insight and a passion for service. Join us to make a difference.</p>
-            <div style="height:10px"></div>
-            <a class="cta" href="#apply">Apply Now</a>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Programs -->
-    <section class="container" id="programs">
-      <h2 class="reveal delay-1">Programs</h2>
-      <p class="muted">Choose from undergraduate, postgraduate and doctoral programs across STEM, Arts, Management and Design.</p>
-      <div style="height:12px"></div>
-      <div class="cards">
-        <div class="card tilt">
-          <h3>Data Science & AI</h3>
-          <p class="muted">Industry projects, research labs and real-world datasets.</p>
-        </div>
-        <div class="card tilt">
-          <h3>Management</h3>
-          <p class="muted">Entrepreneurship, strategy and experiential learning.</p>
-        </div>
-        <div class="card tilt">
-          <h3>Design & Media</h3>
-          <p class="muted">Creative studios, portfolios and industry mentorship.</p>
-        </div>
-      </div>
-    </section>
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
 
-    <!-- News -->
-    <section class="container reveal" id="news">
-      <h2>News & Events</h2>
-      <div style="height:12px"></div>
-      <div class="grid-2">
-        <div>
-          <div class="card">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <h3 style="margin:0">Latest Announcements</h3>
-              <div class="muted" style="font-size:13px">Updated recently</div>
-            </div>
-            <div style="height:12px"></div>
-            <div class="muted marquee" aria-hidden="true"><span>Admissions open for 2026 • New AI Research Lab inaugurated • DSU in global collaborations</span></div>
-          </div>
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.body;
+            const themeToggle = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
 
-          <div style="height:12px"></div>
+            // --- Theme Toggle Logic ---
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const currentTheme = localStorage.getItem('theme') || (prefersDark ? 'dark' : 'light');
 
-          <div class="card">
-            <h4>Featured News</h4>
-            <div class="news-item">
-              <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981d?q=80&w=1200&auto=format&fit=crop&s=8b6d5b3f6e8a1c1b2c3d4e5f6a7b8c9d" alt="news">
-              <div>
-                <strong>New Research Centre for Sustainable Energy</strong>
-                <div class="muted" style="font-size:13px">Funding and cross-disciplinary projects announced.</div>
-              </div>
-            </div>
-          </div>
-        </div>
+            if (currentTheme === 'dark') {
+                body.classList.add('dark');
+                themeIcon.setAttribute('data-lucide', 'moon');
+                lucide.createIcons();
+            } else {
+                themeIcon.setAttribute('data-lucide', 'sun');
+                lucide.createIcons();
+            }
 
-        <aside>
-          <div class="card">
-            <h4>Upcoming Events</h4>
-            <ul style="padding-left:18px;margin:8px 0 0;color:var(--muted)">
-              <li>Convocation — Jan 15, 2026</li>
-              <li>Tech Symposium — Dec 03, 2025</li>
-              <li>Open House — Mar 20, 2026</li>
-            </ul>
-          </div>
+            themeToggle.addEventListener('click', () => {
+                body.classList.toggle('dark');
+                const isDark = body.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
 
-          <div style="height:12px"></div>
+                // Update icon
+                themeIcon.setAttribute('data-lucide', isDark ? 'moon' : 'sun');
+                lucide.createIcons();
+            });
 
-          <div class="card">
-            <h4>Quick Links</h4>
-            <ul style="padding-left:18px;margin:8px 0 0;color:var(--muted)">
-              <li><a href="#apply">Apply</a></li>
-              <li><a href="#admissions">Scholarships</a></li>
-              <li><a href="#research">Research</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
-          </div>
-        </aside>
-      </div>
-    </section>
+            // --- Mobile Menu Toggle Logic ---
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                const menuIcon = mobileMenuButton.querySelector('i');
+                menuIcon.setAttribute('data-lucide', mobileMenu.classList.contains('hidden') ? 'menu' : 'x');
+                lucide.createIcons();
+            });
 
-    <!-- Admissions CTA -->
-    <section class="container" id="admissions">
-      <div class="card" style="display:flex;gap:18px;align-items:center;justify-content:space-between">
-        <div>
-          <h3 style="margin:0 0 6px">Admissions open for 2026</h3>
-          <p class="muted" style="margin:0">Apply now — scholarships and early-bird offers available for qualified candidates.</p>
-        </div>
-        <div>
-          <a class="cta" href="#apply">Start Application</a>
-        </div>
-      </div>
-    </section>
+            // Close mobile menu when a link is clicked
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenuButton.querySelector('i').setAttribute('data-lucide', 'menu');
+                    lucide.createIcons();
+                });
+            });
 
-    <!-- Contact -->
-    <section class="container reveal" id="contact">
-      <h2>Get in touch</h2>
-      <div style="height:12px"></div>
-      <div class="grid-2">
-        <div class="card">
-          <h4>Visit Campus</h4>
-          <p class="muted">123 University Avenue, City, Country<br/>Mon–Fri, 9am–5pm</p>
-          <div style="height:10px"></div>
-          <iframe style="width:100%;height:200px;border-radius:10px;border:0" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3"></iframe>
-        </div>
-        <div class="card">
-          <h4>Contact Form</h4>
-          <form onsubmit="event.preventDefault();alert('Thank you — we will respond shortly')">
-            <div style="display:flex;gap:8px;margin-bottom:8px">
-              <input placeholder="Your name" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(6,22,40,0.06)"/>
-              <input placeholder="Email" style="flex:1;padding:10px;border-radius:8px;border:1px solid rgba(6,22,40,0.06)"/>
-            </div>
-            <textarea placeholder="Message" style="width:100%;padding:10px;border-radius:8px;border:1px solid rgba(6,22,40,0.06);height:90px"></textarea>
-            <div style="height:10px"></div>
-            <button class="cta" type="submit">Send Message</button>
-          </form>
-        </div>
-      </div>
-    </section>
+            // --- Scroll Reveal Animation (Intersection Observer) ---
+            const sections = document.querySelectorAll('.fade-in');
 
-  </main>
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                rootMargin: '0px',
+                threshold: 0.1
+            });
 
-  <footer>
-    <div class="container footer-grid">
-      <div>
-        <h3>Dayananda Sagar University</h3>
-        <div class="muted">Excellence in teaching, research & innovation</div>
-      </div>
-      <div>
-        <h4>Academics</h4>
-        <ul class="muted" style="padding-left:18px;margin-top:6px">
-          <li>Undergraduate</li>
-          <li>Postgraduate</li>
-          <li>Research</li>
-        </ul>
-      </div>
-      <div>
-        <h4>Campus</h4>
-        <ul class="muted" style="padding-left:18px;margin-top:6px">
-          <li>Facilities</li>
-          <li>Housing</li>
-          <li>Clubs</li>
-        </ul>
-      </div>
-      <div>
-        <h4>Contact</h4>
-        <div class="muted">admissions@dsu.edu<br/>+91 80 1234 5678</div>
-        <div style="height:10px"></div>
-        <div style="display:flex;gap:10px;margin-top:8px">
-          <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center">f</div>
-          <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center">in</div>
-          <div style="width:36px;height:36px;border-radius:8px;background:rgba(0,0,0,0.06);display:flex;align-items:center;justify-content:center">t</div>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // Mobile panel control
-    const hambBtn = document.getElementById('hambBtn');
-    const mobilePanel = document.getElementById('mobilePanel');
-    const mobileClose = document.getElementById('mobileClose');
-    function openMobile(){ mobilePanel.classList.add('open'); mobilePanel.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
-    function closeMobile(){ mobilePanel.classList.remove('open'); mobilePanel.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
-    hambBtn && hambBtn.addEventListener('click', openMobile);
-    mobileClose && mobileClose.addEventListener('click', closeMobile);
-
-    // Theme toggle + accessible activation
-    const themeToggle = document.getElementById('themeToggle');
-    function setTheme(t){ document.body.setAttribute('data-theme', t); localStorage.setItem('site-theme', t); themeToggle.textContent = t === 'dark' ? '☀️' : '🌙'; }
-    const saved = localStorage.getItem('site-theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    setTheme(saved);
-    themeToggle.addEventListener('click', ()=> setTheme(document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
-    themeToggle.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' ') setTheme(document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'); });
-
-    // Smooth reveal on scroll (intersection)
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(entry=>{ if(entry.isIntersecting) { entry.target.classList.add('reveal'); io.unobserve(entry.target); } });
-    },{threshold:0.12});
-    document.querySelectorAll('.reveal, .card, h2, .hero-right, .stat').forEach(el=>io.observe(el));
-
-    // Tilt effect for interactive cards (desktop only)
-    const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
-    if(!isTouch){
-      document.querySelectorAll('.tilt').forEach(el=>{
-        el.addEventListener('mousemove', e=>{
-          const r = el.getBoundingClientRect();
-          const x = (e.clientX - r.left - r.width/2) / r.width;
-          const y = (e.clientY - r.top - r.height/2) / r.height;
-          el.style.transform = `perspective(900px) rotateX(${(-y*7).toFixed(2)}deg) rotateY(${(x*7).toFixed(2)}deg) translateZ(6px)`;
+            sections.forEach(element => {
+                observer.observe(element);
+            });
         });
-        el.addEventListener('mouseleave', ()=> el.style.transform = '');
-      });
-    }
-
-    // Quick search demo
-    function searchPrograms(){ const q = document.getElementById('q').value.trim(); if(!q) return alert('Try searching for a program, e.g. Computer Science'); alert('Searching for: '+q+' (demo)'); }
-
-    // Keyboard helpers
-    document.addEventListener('keydown', e=>{ if(e.key === 's' && document.activeElement.tagName !== 'INPUT') document.getElementById('q').focus(); if(e.key === 'Escape') closeMobile(); });
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(a=> a.addEventListener('click', function(e){ const href = this.getAttribute('href'); if(href.length>1){ e.preventDefault(); const el = document.querySelector(href); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); closeMobile(); } }));
-
-  </script>
+    </script>
 </body>
 </html>
